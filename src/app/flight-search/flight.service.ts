@@ -1,17 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Flight } from '../entities/flight';
+import { BASE_URL } from '../app.tokens';
 
 @Injectable()
 export class FlightService {
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    @Inject(BASE_URL) private baseUrl: string) {
     console.debug('');
   }
 
   find(from: string, to: string): Observable<Flight[]> {
-    let url = 'http://www.angular.at/api/flight';
+    let url = this.baseUrl + '/flight';
 
     let headers = new Headers();
     headers.set('Accept', 'application/json');
