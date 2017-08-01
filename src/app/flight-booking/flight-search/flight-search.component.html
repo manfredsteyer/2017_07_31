@@ -1,17 +1,38 @@
 <h1>Flight Search</h1>
 <div class="row card">
 
+  <form #form="ngForm">
   <div class="form-group">
     <label>From:</label>
-    <input class="form-control" [(ngModel)]="from">
+    <input
+      class="form-control"
+      [(ngModel)]="from"
+      name="from"
+      minlength="3"
+      required
+      maxlength="30"
+      pattern="[A-Za-zöäüßÖÄÜ]*">
+
+    <div *ngIf="!form?.controls['from']?.valid && form?.controls['from']?.dirty">Fehler</div>
+    <div *ngIf="form?.controls['from']?.hasError('required') && form?.controls['from']?.dirty">Required</div>
+    <div *ngIf="form?.controls['from']?.hasError('minlength')">Minlength</div>
+    <div *ngIf="form?.controls['from']?.hasError('maxlength')">Maxlength</div>
+    <div *ngIf="form?.controls['from']?.hasError('pattern')">Pattern</div>
+    <div>
+      <pre>
+      {{ form?.controls['from']?.errors | json }}
+      </pre>
+    </div>
+    <!-- email -->
   </div>
   <div class="form-group">
     <label>To:</label>
-    <input class="form-control" [(ngModel)]="to">
+    <input name="to" class="form-control" [(ngModel)]="to">
   </div>
   <div class="form-group">
-    <button class="btn btn-default" (click)="search()">Search</button>
+    <button class="btn btn-default" [disabled]="!form?.valid" (click)="search()">Search</button>
   </div>
+  </form>
 </div>
 
 <div class="row">

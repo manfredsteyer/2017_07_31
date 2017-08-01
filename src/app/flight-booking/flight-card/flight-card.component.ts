@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { Flight } from '../../entities/flight';
 
 @Component({
@@ -6,15 +9,34 @@ import { Flight } from '../../entities/flight';
   templateUrl: './flight-card.component.html',
   styleUrls: ['./flight-card.component.css']
 })
-export class FlightCardComponent implements OnInit {
+export class FlightCardComponent implements OnInit, OnChanges, OnDestroy {
 
-  constructor() { }
+
+  constructor() {
+    console.debug('ctor', this.selected, this.item);
+  }
 
   @Input() item: Flight;
   @Input() selected: boolean;
   @Output() selectedChange = new EventEmitter<boolean>();
 
   ngOnInit() {
+    console.debug('ngOnInit', this.selected, this.item);
+    //this.selectedChange.next(true);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    console.debug('ngOnChanges', this.selected, this.item);
+
+    if (changes['item']) {
+      console.debug('\titem changed');
+    }
+    if (changes['selected']) {
+      console.debug('\tselected changed');
+    }
+
+
   }
 
   select() {
@@ -25,6 +47,10 @@ export class FlightCardComponent implements OnInit {
   deselect() {
     this.selected = false;
     this.selectedChange.next(this.selected);
+  }
+
+  ngOnDestroy(): void {
+    console.debug('ngOnDestroy');
   }
 
 }
