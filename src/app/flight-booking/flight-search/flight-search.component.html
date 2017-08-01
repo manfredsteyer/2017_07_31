@@ -1,7 +1,10 @@
 <h1>Flight Search</h1>
 <div class="row card">
 
-  <form #form="ngForm">
+  <form #form="ngForm" roundTrip>
+
+    <div *ngIf="form?.hasError('roundTrip')">roundTrip</div>
+
   <div class="form-group">
     <label>From:</label>
     <input
@@ -10,7 +13,9 @@
       name="from"
       minlength="3"
       required
+      asyncCity
       maxlength="30"
+      city="Graz,Hamburg,Wien,Paris,Takern2,Frankfurt,Zürich"
       pattern="[A-Za-zöäüßÖÄÜ]*">
 
     <div *ngIf="!form?.controls['from']?.valid && form?.controls['from']?.dirty">Fehler</div>
@@ -18,6 +23,11 @@
     <div *ngIf="form?.controls['from']?.hasError('minlength')">Minlength</div>
     <div *ngIf="form?.controls['from']?.hasError('maxlength')">Maxlength</div>
     <div *ngIf="form?.controls['from']?.hasError('pattern')">Pattern</div>
+    <div *ngIf="form?.controls['from']?.hasError('city')">City</div>
+    <div *ngIf="form?.controls['from']?.hasError('asyncCity')">City</div>
+    <div *ngIf="form?.controls['from']?.pending">
+      <marquee direction="down">Validiere ...</marquee>
+    </div>
     <div>
       <pre>
       {{ form?.controls['from']?.errors | json }}
@@ -66,3 +76,4 @@
 <div class="row card">
   <pre>{{ basket | json }}</pre>
 </div>
+
