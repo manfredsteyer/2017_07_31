@@ -8,13 +8,13 @@ import { FlightService } from './flight.service';
   selector: 'flight-search',
   templateUrl: './flight-search.component.html',
   styleUrls: ['./flight-search.component.css'],
-  providers: [FlightService]
+  providers: []
 })
 export class FlightSearchComponent implements OnInit {
 
   from: string = 'Hamburg';
   to: string = 'Graz';
-  flights: Array<Flight> = [];
+
   selectedFlight: Flight;
 
   basket: object = {
@@ -27,6 +27,13 @@ export class FlightSearchComponent implements OnInit {
     console.debug('');
   }
 
+  // flights: Array<Flight> = [];
+
+  // {{ flights.length }}
+  get flights() {
+    return this.flightService.flights;
+  }
+
   ngOnInit() {
   }
 
@@ -34,16 +41,8 @@ export class FlightSearchComponent implements OnInit {
 
     if (!this.from || !this.to) return;
 
-    this.flightService
-        .find(this.from, this.to)
-        .subscribe(
-          (flights) => {
-            this.flights = flights;
-          },
-          (errResp) => {
-            console.error('Error loading flights', errResp);
-          }
-        )
+    this.flightService.load(this.from, this.to);
+
 
   }
 

@@ -13,6 +13,15 @@ export class FlightService {
     console.debug('');
   }
 
+  flights: Flight[] = [];
+
+  load(from: string, to: string): void {
+    this.find(from, to).subscribe(
+      flights => { this.flights = flights; },
+      err => console.error('Error loading flights', err)
+    )
+  }
+
   find(from: string, to: string): Observable<Flight[]> {
     let url = this.baseUrl + '/flight';
 
